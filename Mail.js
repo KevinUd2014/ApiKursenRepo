@@ -3,7 +3,7 @@ var mail = {
   
   LABELS: [],
 
-  loadGmailApi:function() 
+  loadGmailApi:function() //
   {
     gapi.client.load('gmail', 'v1', mail.getLabels);
   },
