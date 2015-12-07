@@ -1,15 +1,15 @@
 var mail = {
-  SORTLABEL:"Location/",
-  
   LABELS: [],
+  MAILS:[],
 
-  loadGmailApi:function() //
+  loadGmailApi:function() 
   {
     gapi.client.load('gmail', 'v1', mail.getLabels);
   },
 
   getLabels:function() 
   {
+    //console.log("vad som helst")
     var request = gapi.client.gmail.users.labels.list({
       'userId': 'me'
     });
@@ -18,17 +18,35 @@ var mail = {
     {
       if (resp.labels && resp.labels.length > 0) 
       {
-        for (var i = 0; i < resp.labels.length; i++) 
+        for (var i = 0; i < resp.labels.length; i++) //for every label in the location we do this
         {
-            if(resp.labels[i].name.indexOf("Location:") > -1)//sort out any label that isnt nested in the "Location"-label
+            if(resp.labels[i].name.indexOf("Location/") > -1)//This sorts every label in my location folder
             {
               mail.LABELS.push(resp.labels[i]);
             }
         }
       }
-      //return mail.LABELIDS;
-      //mail.appendMessages(mail.LABELS);
-      gmaps.geocodeAddress(mail.LABELS);
+      gmaps.geocodeAddress(mail.LABELS);// we will now use this function
+      mail.getallmails();//and the function to get all the mails
+    });
+  },
+  
+  getallmails:function()
+  {
+    var request = gapi.client.gmail.users.messages.list({
+      'userId': 'me'
+    });
+    
+    request.execute(function(resp) 
+    {
+      if (resp.messages && resp.messages.length > 0) 
+      {
+        for (var i = 0; i < resp.messages.length; i++) 
+        {
+          mail.MAILS.push(resp.messages[i]);
+          console.log(mail.MAILS);
+        }
+      }
     });
   },
   

@@ -6,62 +6,54 @@ var gmaps =
   initMap:function() 
   {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat:50,lng:15},
+      center: {lat:50,lng:15},//{lat: -34.397, lng: 150.644},
       zoom: 2
     });
   },
-
-  geocodeAddress:function(labels) {
+  
+ geocodeAddress:function(labels) {
     var geocoder = new google.maps.Geocoder();
-    var i = 0;
     
-    //var country = "Sweden";
-    //var geocoder;
-
-    //geocoder.geocode( {'address' : country}, function(results, status) {
-    //   if (status == google.maps.GeocoderStatus.OK) 
-    //   {
-    //        map.setCenter(results[0].geometry.location);
-    //    }
-    //});
-    
-     setTimeout(function () 
-    {
-      if (i < labels.length) {
-        gmaps.createMarkers(labels[i],geocoder);
+      for(var i=0; i < labels.length; i++)
+      {
+          gmaps.getSpotsOnMap(labels[i],geocoder);
       }
-      i++; 
-    }, 300);
   },
   
-  createMarkers:function(currentlabel,geocoder)
+  getSpotsOnMap:function(currentlabel,geocoder)
   {
+      //var testst = 0;
       var adress = currentlabel.name;
-      var newadress = adress.replace("Location:","");
-      console.log(newadress);
-      geocoder.geocode({'address': newadress}, 
+      //testst++;
+      var newadress = adress.replace("Location/","");
+      geocoder.geocode({'address': newadress},
       function(results, status) 
       {
           if (status === google.maps.GeocoderStatus.OK)
           {
-            console.log(results);
-            //console.log(results[0].place_id);
             var currentloc = results[0].geometry.location;
-
-            gmaps.putMarkerOnMap(currentloc);
+            gmaps.createmarkerOnMap(currentloc);
           } 
-          else 
+          if(status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) 
           {
-            alert('Geocode was not successful for the following reason: ' + status);
+            setTimeout(function(){
+                gmaps.getSpotsOnMap(currentlabel, geocoder);
+            }, 200);
+            //testst++;
+            //console.log("loop"+testst);
+            console.log('Geocode was not successful for the following reason: ' + status);
           }
       });
   },
-  putMarkerOnMap:function(currentloc)
+  createmarkerOnMap:function(currentloc,newadress)
   {
           var marker = new google.maps.Marker({
           position: currentloc,
           map: map,
-          title: 'Hello World!'
+          title: newadress
         });
-  },
+        //console.log("hej");
+        //https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple
+  }
 };
+
