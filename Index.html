@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <script src="Maps.js"></script>
+    <script src="Main.js"></script>
+    <script src="Mail.js"></script>
+    <script src="Authorize.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpTguVF-ff_Y49wSSPj-FdnjXzZRvIz9Q" async defer></script>
+    </script>
+    <style>
+      html, body {
+        height: 80%;/*sätter höjden*/
+        width: 80%;/*sätter bredden*/
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="authorize-div">
+    <span>Authorize access to Gmail API</span>
+      Button for the user to click to initiate auth sequence 
+      <button id="authorize-button" onclick="authorize.handleAuthLogin(event)">
+        Authorize
+      </button>
+    </div>
+    <div id="map"></div>  
+    <pre id="output"></pre>
+  </body>
+</html>
