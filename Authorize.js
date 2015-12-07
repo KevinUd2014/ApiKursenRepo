@@ -9,7 +9,7 @@ var authorize = {
    checkAuth:function() {
     gapi.auth.authorize(
       {
-        'client_id':CLIENT_ID,
+        'client_id':CLIENT_ID,//
         'scope': authorize.SCOPES.join(' '),
         'immediate': true
       }, authorize.handleAuthResult);

@@ -6,8 +6,8 @@ var gmaps =
   initMap:function() 
   {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat:15,lng:0},//{lat: -34.397, lng: 150.644},//
-      zoom: 3
+      center: {lat:50,lng:15},
+      zoom: 2
     });
   },
 
@@ -28,13 +28,13 @@ var gmaps =
      setTimeout(function () 
     {
       if (i < labels.length) {
-        gmaps.startgeocoding(labels[i],geocoder);
+        gmaps.createMarkers(labels[i],geocoder);
       }
       i++; 
     }, 300);
   },
   
-  startgeocoding:function(currentlabel,geocoder)
+  createMarkers:function(currentlabel,geocoder)
   {
       var adress = currentlabel.name;
       var newadress = adress.replace("Location:","");
@@ -48,7 +48,7 @@ var gmaps =
             //console.log(results[0].place_id);
             var currentloc = results[0].geometry.location;
 
-            gmaps.createmarker(currentloc);
+            gmaps.putMarkerOnMap(currentloc);
           } 
           else 
           {
@@ -56,7 +56,7 @@ var gmaps =
           }
       });
   },
-  createmarker:function(currentloc)
+  putMarkerOnMap:function(currentloc)
   {
           var marker = new google.maps.Marker({
           position: currentloc,
