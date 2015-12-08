@@ -2,7 +2,7 @@
 var mailMap =
 {
     main:function(){
-        gmaps.initMap();
+        googlemaps.initMap();
         //authorize.checkAuth();//
     }
 };

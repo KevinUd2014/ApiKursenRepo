@@ -1,6 +1,4 @@
 var mail = {
-  LABELS: [],
-  MAILS:[],
 
   loadGmailApi:function() //vet inte om denna behövs kanske inte!
   {
@@ -22,32 +20,56 @@ var mail = {
         {
             if(resp.labels[i].name.indexOf("Location/") > -1)//This sorts every label in my location folder
             {
-              mail.LABELS.push(resp.labels[i]);
+              mail.getallmails(resp.labels[i]);
+              //mail.LABELS.push(resp.labels[i]);
             }
         }
       }
-      gmaps.geocodeAddress(mail.LABELS);// we will now use this function
-      mail.getallmails();//and the function to get all the mails
+      //setTimeout(function() {gmaps.geocodeAddress(mail.TOTALMAIL);}, 3000);//put on a timer after 3 seconds 
+      //gmaps.geocodeAddress(mail.LABELS);// we will now use this function
+      //mail.getallmails();//and the function to get all the mails
     });
   },
   
-  getallmails:function()//this function gets all the mails from the email
+  getallmails:function(label)//this function gets all the mails from the email
   {
     var request = gapi.client.gmail.users.messages.list({
-      'userId': 'me'
+      'userId': 'me',
+      'labelIds': label.id
     });
-    
-    request.execute(function(resp) 
-    {
-      if (resp.messages && resp.messages.length > 0)
+      
+      request.execute(function(resp) 
       {
-        for (var i = 0; i < resp.messages.length; i++)
-        {
-          mail.MAILS.push(resp.messages[i]);
-          console.log(mail.MAILS);
-        }
+        for (var i = 0; i < resp.messages.length; i++) {
+          var message = resp.messages[i];
+          
+          mail.getMail(message,label);
       }
     });
+  },
+  getMail:function(message, label){
+    var request = gapi.client.gmail.users.messages.get({
+            'userId': 'me',
+            'id': message.id
+            });
+            
+          request.execute(function(response){
+            //console.log(response);//had to console log the response
+            var message = response.payload.parts[1].body.data;
+            if(message === undefined)
+            {
+              message = response.payload.parts[0].parts[1].body.data;
+            }
+            
+            message = window.atob(message.replace(/-/g, '+').replace(/_/g, '/')); //This replaces some important characters in gmail.//got this from one in the class!!
+            
+            var geocoderItem = {
+              subject:response.payload.headers[16].value,
+              snippet:response.snippet,
+              message: message,
+            };
+            googlemaps.getSpotsOnMap(label, geocoderItem);
+        });
   },
 
 };
