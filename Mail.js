@@ -2,7 +2,7 @@ var mail = {
   LABELS: [],
   MAILS:[],
 
-  loadGmailApi:function() 
+  loadGmailApi:function() //vet inte om denna behövs kanske inte!
   {
     gapi.client.load('gmail', 'v1', mail.getLabels);
   },
@@ -31,7 +31,7 @@ var mail = {
     });
   },
   
-  getallmails:function()
+  getallmails:function()//this function gets all the mails from the email
   {
     var request = gapi.client.gmail.users.messages.list({
       'userId': 'me'
@@ -39,9 +39,9 @@ var mail = {
     
     request.execute(function(resp) 
     {
-      if (resp.messages && resp.messages.length > 0) 
+      if (resp.messages && resp.messages.length > 0)
       {
-        for (var i = 0; i < resp.messages.length; i++) 
+        for (var i = 0; i < resp.messages.length; i++)
         {
           mail.MAILS.push(resp.messages[i]);
           console.log(mail.MAILS);
@@ -49,14 +49,5 @@ var mail = {
       }
     });
   },
-  
-  appendMessages:function(message)
-  {
-    for (var i = 0; i < message.length; i++) 
-        {
-            var pre = document.getElementById('output');
-            var textContent = document.createTextNode(message[i].name + '\n');
-            pre.appendChild(textContent);
-        }
-  }
+
 };
