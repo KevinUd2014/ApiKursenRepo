@@ -1,6 +1,6 @@
 var mail = {
 
-  loadGmailApi:function() //vet inte om denna behövs kanske inte!
+  loadTheGmailApi:function() //vet inte om denna behövs kanske inte!
   {
     gapi.client.load('gmail', 'v1', mail.getLabels);
   },
@@ -47,29 +47,33 @@ var mail = {
       }
     });
   },
-  getMail:function(message, label){
+  getMail:function(message, label){//and this email gets every specific email with the message!
     var request = gapi.client.gmail.users.messages.get({
             'userId': 'me',
             'id': message.id
             });
             
           request.execute(function(response){
-            //console.log(response);//had to console log the response
-            var message = response.payload.parts[1].body.data;
-            if(message === undefined)
-            {
-              message = response.payload.parts[0].parts[1].body.data;
-            }
             
-            message = window.atob(message.replace(/-/g, '+').replace(/_/g, '/')); //This replaces some important characters in gmail.//got this from one in the class!!
+              var message = response.payload.parts[1].body.data;
+
+              //console.log(response);//had to console log the response
+
+              if(message === undefined)//if a message is undefined look for it in another part!!
+              {
+                message = response.payload.parts[0].parts[1].body.data;//there is one email that's in another part of the gmail so this is needed or there will be an error!//Got some help with this one!
+              }
             
-            var geocoderItem = {
-              subject:response.payload.headers[16].value,
-              snippet:response.snippet,
-              message: message,
-            };
-            googlemaps.getSpotsOnMap(label, geocoderItem);
-        });
+              message = window.atob(message.replace(/-/g, '+').replace(/_/g, '/')); //This replaces some important characters in gmail.//got this from one in the class!!
+            
+              var geocoderItem = 
+              {
+                  subject:response.payload.headers[16].value,
+                  snippet:response.snippet,
+                  message: message,
+              };
+              googlemaps.getSpotsOnMap(label, geocoderItem);
+          });
   },
 
 };

@@ -44,18 +44,19 @@ var googlemaps =
   },
   createmarkerOnMap:function(currentlocation,newadress, geocoderItem)
   {
-    //https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple
-    console.log(geocoderItem);
-    var contentString = '<b>'+geocoderItem.message+'</b>';//here I put in all the text that will be displayed in a marker position
-
-    var infowindow = new google.maps.InfoWindow({
-      content: contentString
-    });
     var marker = new google.maps.Marker({
       position: currentlocation,
       map: map,
       title: newadress
     });
+    //https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple
+    console.log(geocoderItem);
+    var contentString = '<h1>'+newadress+'</h1>'+ newadress+ '  ' + currentlocation +'<b>'+geocoderItem.message+'</b>';//here I put in all the text that will be displayed in a marker position
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    
     marker.addListener('click', function() {
       
       infowindow.open(map, marker);

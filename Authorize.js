@@ -1,6 +1,6 @@
-var authorize = {
+var authorize = {//Used this one because it was provided  by google themselves to be able to authenticate the api keys and such!
     
-  CLIENT_ID:'212929337942-h71aauil68deoesdiriktcvf9v4nsvc4.apps.googleusercontent.com',//min authentication code
+  CLIENT_ID:'212929337942-h71aauil68deoesdiriktcvf9v4nsvc4.apps.googleusercontent.com',//My authentication code
   
   SCOPES:['https://mail.google.com/'],
   
@@ -26,7 +26,7 @@ var authorize = {
     {
       // Hide auth UI, then load client library.
       authorizeDiv.style.display = 'none';
-      mail.loadGmailApi();
+      mail.loadTheGmailApi();
       mailMap.main();
     } 
     else 
